@@ -1,7 +1,5 @@
 package com.anderson.cursomc.resources;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,7 +19,7 @@ public class CategoriaResource {
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	private ResponseEntity<?> find(@PathVariable Integer id) {
-		Optional<Categoria> obj = categoriaService.buscar(id);
+		Categoria obj = categoriaService.buscar(id);
 		return ResponseEntity.ok().body(obj);
 	}
 
