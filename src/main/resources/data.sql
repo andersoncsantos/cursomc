@@ -25,7 +25,15 @@ insert into telefone(cliente_id, telefones) values(1, '92345-6789');
 
 insert into endereco(bairro, cep, complemento, logradouro, numero, cidade_id, cliente_id)
 values('Jardim', '11111-111', 'Apto 303', 'Rua Flores', 300, 2, 1);
-
 insert into endereco(bairro, cep, complemento, logradouro, numero, cidade_id, cliente_id)
 values('Centro', '11111-112', 'Sala 800', 'Avenida Matos', 105, 3, 1);
+
+insert into pedido(instante, cliente_id, endereco_de_entrega_id) values('2019-12-29 15:19:00', 1, 1);
+insert into pedido(instante, cliente_id, endereco_de_entrega_id) values('2019-12-29 15:26:00', 1, 2);
+
+insert into pagamento(pedido_id, estado) values(1, 2);
+insert into pagamento_com_cartao(numero_de_parcelas, pedido_id) values(6, 1);
+
+insert into pagamento(pedido_id, estado) values(2, 1);
+insert into pagamento_com_boleto(data_pagamento, data_vencimento, pedido_id) values(null, '2019-12-29 16:32:00', 2);
 
