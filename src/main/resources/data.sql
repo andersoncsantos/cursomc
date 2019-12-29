@@ -37,3 +37,7 @@ insert into pagamento_com_cartao(numero_de_parcelas, pedido_id) values(6, 1);
 insert into pagamento(pedido_id, estado) values(2, 1);
 insert into pagamento_com_boleto(data_pagamento, data_vencimento, pedido_id) values(null, '2019-12-29 16:32:00', 2);
 
+insert into item_pedido(desconto, preco, quantidade, pedido_id, produto_id) values(0.0, 4800.00, 1, 1, 1);
+insert into item_pedido(desconto, preco, quantidade, pedido_id, produto_id) values(0.0, 75.00, 2, 1, 3);
+insert into item_pedido(desconto, preco, quantidade, pedido_id, produto_id) values(100.0, 320.00, 1, 2, 2);
+
