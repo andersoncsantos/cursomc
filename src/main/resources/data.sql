@@ -1,5 +1,10 @@
-insert into categoria(nome) values('informática');
-insert into categoria(nome) values('escritório');
+insert into categoria(nome) values('Informática');
+insert into categoria(nome) values('Escritório');
+insert into categoria(nome) values('Smartphones');
+insert into categoria(nome) values('SmartTVs');
+insert into categoria(nome) values('Eletrodomésticos');
+insert into categoria(nome) values('Eletrônicos');
+insert into categoria(nome) values('Móveis');
 
 insert into produto(nome, preco) values('Computador', 4800.00);
 insert into produto(nome, preco) values('Impressora', 320.00);
