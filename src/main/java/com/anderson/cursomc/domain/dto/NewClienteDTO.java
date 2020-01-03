@@ -11,8 +11,6 @@ import lombok.Setter;
 @Setter
 public class NewClienteDTO implements Serializable {
 	
-	//https://github.com/acenelio/springboot2-ionic-backend/commit/2592dd866080f619f12f51266f39dbdc59e1fb83
-	
 	private static final long serialVersionUID = 1L;
 	
 	private String nome;
