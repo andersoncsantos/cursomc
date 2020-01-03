@@ -2,7 +2,7 @@ package com.anderson.cursomc.domain;
 
 import javax.persistence.Entity;
 
-import com.anderson.cursomc.domain.enums.EstadoPagamento;
+import com.anderson.cursomc.domain.enums.StatusPagamento;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,7 +18,7 @@ public class PagamentoComCartao extends Pagamento {
 
 	private Integer numeroDeParcelas;
 
-	public PagamentoComCartao(Integer id, EstadoPagamento estado, Pedido pedido, Integer numeroDeParcelas) {
+	public PagamentoComCartao(Integer id, StatusPagamento estado, Pedido pedido, Integer numeroDeParcelas) {
 		super(id, estado, pedido);
 		this.numeroDeParcelas = numeroDeParcelas;
 	}

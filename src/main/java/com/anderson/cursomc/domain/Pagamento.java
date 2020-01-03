@@ -10,7 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 
-import com.anderson.cursomc.domain.enums.EstadoPagamento;
+import com.anderson.cursomc.domain.enums.StatusPagamento;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.EqualsAndHashCode;
@@ -26,7 +26,7 @@ public abstract class Pagamento implements Serializable {
 	
 	@Id
 	private Integer id;
-	private Integer estado;
+	private Integer status;
 	
 	@JsonIgnore
 	@OneToOne
@@ -34,9 +34,9 @@ public abstract class Pagamento implements Serializable {
 	@MapsId
 	private Pedido pedido;
 
-	public Pagamento(Integer id, EstadoPagamento estado, Pedido pedido) {
+	public Pagamento(Integer id, StatusPagamento statusPagamento, Pedido pedido) {
 		this.id = id;
-		this.estado = estado.getCod();
+		this.status = statusPagamento.getCod();
 		this.pedido = pedido;
 	}
 
@@ -48,12 +48,12 @@ public abstract class Pagamento implements Serializable {
 		this.id = id;
 	}
 
-	public EstadoPagamento getEstado() {
-		return EstadoPagamento.toEnum(estado);
+	public StatusPagamento getStatus() {
+		return StatusPagamento.toEnum(status);
 	}
 
-	public void setEstado(EstadoPagamento estado) {
-		this.estado = (estado == null) ? null : estado.getCod();
+	public void setStatus(StatusPagamento statusPagamento) {
+		this.status = (status == null) ? null : statusPagamento.getCod();
 	}
 
 	public Pedido getPedido() {

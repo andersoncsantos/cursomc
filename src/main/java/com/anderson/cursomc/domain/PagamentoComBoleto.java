@@ -4,7 +4,7 @@ import java.util.Date;
 
 import javax.persistence.Entity;
 
-import com.anderson.cursomc.domain.enums.EstadoPagamento;
+import com.anderson.cursomc.domain.enums.StatusPagamento;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.Getter;
@@ -25,7 +25,7 @@ public class PagamentoComBoleto extends Pagamento {
 	@JsonFormat(pattern = "dd/MM/yyyy")
 	private Date dataPagamento;
 	
-	public PagamentoComBoleto(Integer id, EstadoPagamento estado, Pedido pedido, Date dataVencimento, Date dataPagamento) {
+	public PagamentoComBoleto(Integer id, StatusPagamento estado, Pedido pedido, Date dataVencimento, Date dataPagamento) {
 		super(id, estado, pedido);
 		this.dataVencimento = dataVencimento;
 		this.dataPagamento = dataPagamento;
