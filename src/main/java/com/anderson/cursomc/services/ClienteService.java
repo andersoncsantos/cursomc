@@ -66,8 +66,8 @@ public class ClienteService {
 		return clienteRepository.findAll();
 	}
 	
-	public Page<Cliente> findPage(Integer page, Integer lines, String orderby, String direction) {
-		PageRequest pageRequest = PageRequest.of(page, lines, Direction.valueOf(direction), orderby );
+	public Page<Cliente> findPage(Integer page, Integer lines, String orderBy, String direction) {
+		PageRequest pageRequest = PageRequest.of(page, lines, Direction.valueOf(direction), orderBy );
 		return clienteRepository.findAll(pageRequest);
 	}
 	
