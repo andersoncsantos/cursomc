@@ -12,6 +12,7 @@ import javax.persistence.OneToOne;
 
 import com.anderson.cursomc.domain.enums.StatusPagamento;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -20,6 +21,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @EqualsAndHashCode(of = "id")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@type")
 public abstract class Pagamento implements Serializable {
 	
 	private static final long serialVersionUID = 1L;

@@ -9,23 +9,23 @@ public enum StatusPagamento {
 	QUITADO(2, "Quitado"),
 	CANCELADO(3, "Cancelado");
 
-	private Integer cod;
+	private int cod;
 	private String descricao;
 
-	private StatusPagamento(Integer cod, String descricao) {
+	private StatusPagamento(int cod, String descricao) {
 		this.cod = cod;
 		this.descricao = descricao;
 	}
 
-	public static StatusPagamento toEnum(Integer cod) {
+    public static StatusPagamento toEnum(Integer cod) {
 
 		if (cod == null) {
 			return null;
 		}
 
-		for (StatusPagamento tipoEstadoPagamento : StatusPagamento.values()) {
-			if (cod.equals(tipoEstadoPagamento.getCod())) {
-				return tipoEstadoPagamento;
+		for (StatusPagamento statusPagamento : StatusPagamento.values()) {
+			if (cod.equals(statusPagamento.getCod())) {
+				return statusPagamento;
 			}
 		}
 
