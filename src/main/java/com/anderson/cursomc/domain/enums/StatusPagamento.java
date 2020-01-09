@@ -9,10 +9,10 @@ public enum StatusPagamento {
 	QUITADO(2, "Quitado"),
 	CANCELADO(3, "Cancelado");
 
-	private int cod;
+	private Integer cod;
 	private String descricao;
 
-	private StatusPagamento(int cod, String descricao) {
+	private StatusPagamento(Integer cod, String descricao) {
 		this.cod = cod;
 		this.descricao = descricao;
 	}

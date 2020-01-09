@@ -55,7 +55,7 @@ public abstract class Pagamento implements Serializable {
 	}
 
 	public void setStatus(StatusPagamento statusPagamento) {
-		this.status = (status == null) ? null : statusPagamento.getCod();
+		this.status = statusPagamento.getCod();
 	}
 
 	public Pedido getPedido() {

@@ -8,13 +8,9 @@ import javax.persistence.Entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @NoArgsConstructor
-@Getter
-@Setter
 @EqualsAndHashCode(of = "id")
 @Entity
 public class ItemPedido implements Serializable {
@@ -30,6 +26,7 @@ public class ItemPedido implements Serializable {
 	private Double preco;
 	
 	public ItemPedido(Pedido pedido, Produto produto, Double desconto, Integer quantidade, Double preco) {
+	    super();
 		id.setPedido(pedido);
 		id.setProduto(produto);
 		this.desconto = desconto;
@@ -56,6 +53,38 @@ public class ItemPedido implements Serializable {
 	
 	public void setProduto(Produto produto) {
         id.setProduto(produto);
+    }
+
+    public ItemPedidoPK getId() {
+        return id;
+    }
+
+    public void setId(ItemPedidoPK id) {
+        this.id = id;
+    }
+
+    public Double getDesconto() {
+        return desconto;
+    }
+
+    public void setDesconto(Double desconto) {
+        this.desconto = desconto;
+    }
+
+    public Integer getQuantidade() {
+        return quantidade;
+    }
+
+    public void setQuantidade(Integer quantidade) {
+        this.quantidade = quantidade;
+    }
+
+    public Double getPreco() {
+        return preco;
+    }
+
+    public void setPreco(Double preco) {
+        this.preco = preco;
     }
 
 }
