@@ -20,7 +20,7 @@ import com.anderson.cursomc.services.exceptions.ObjectNotFoundException;
 public class PedidoService {
 
 	@Autowired
-	private PedidoRepository repo;
+	private PedidoRepository pedidoRepository;
 	
 	@Autowired
     private BoletoService boletoService;
@@ -35,31 +35,31 @@ public class PedidoService {
     private ItemPedidoRepository itemPedidoRepository;
 
 	public Pedido find(Integer id) {
-		Optional<Pedido> pedido = repo.findById(id);
+		Optional<Pedido> pedido = pedidoRepository.findById(id);
 		return pedido.orElseThrow(() -> new ObjectNotFoundException(
 				"Objeto não encontrado! Id: " + id + ", Tipo: " + Pedido.class.getName()));
 	}
 
 	@Transactional
-	public Pedido insert(Pedido obj) {
-        obj.setId(null);
-        obj.setInstante(new Date());
-        obj.getPagamento().setStatus(StatusPagamento.PENDENTE);
-        obj.getPagamento().setPedido(obj);
-        if (obj.getPagamento() instanceof PagamentoComBoleto) {
-            PagamentoComBoleto pagto = (PagamentoComBoleto) obj.getPagamento();
-            boletoService.preencherPagamentoComBoleto(pagto, obj.getInstante());
+	public Pedido insert(Pedido pedido) {
+        pedido.setId(null);
+        pedido.setInstante(new Date());
+        pedido.getPagamento().setStatus(StatusPagamento.PENDENTE);
+        pedido.getPagamento().setPedido(pedido);
+        if (pedido.getPagamento() instanceof PagamentoComBoleto) {
+            PagamentoComBoleto pagto = (PagamentoComBoleto) pedido.getPagamento();
+            boletoService.preencherPagamentoComBoleto(pagto, pedido.getInstante());
         }
-        obj = repo.save(obj);
-        pagamentoRepository.save(obj.getPagamento());
-        for (ItemPedido ip : obj.getItens()) {
+        pedido = pedidoRepository.save(pedido);
+        pagamentoRepository.save(pedido.getPagamento());
+        for (ItemPedido ip : pedido.getItens()) {
             ip.setDesconto(0.0);
             ip.setProduto(produtoService.find(ip.getProduto().getId()));
             ip.setPreco(ip.getProduto().getPreco());
-            ip.setPedido(obj);
+            ip.setPedido(pedido);
         }
-        itemPedidoRepository.saveAll(obj.getItens());
-        return obj;
+        itemPedidoRepository.saveAll(pedido.getItens());
+        return pedido;
     }
 
 }
