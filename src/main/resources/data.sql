@@ -1,19 +1,36 @@
-insert into categoria(nome) values('Informática');
-insert into categoria(nome) values('Escritório');
-insert into categoria(nome) values('Smartphones');
-insert into categoria(nome) values('SmartTVs');
-insert into categoria(nome) values('Eletrodomésticos');
-insert into categoria(nome) values('Eletrônicos');
-insert into categoria(nome) values('Móveis');
+insert into categoria(nome) values('Informática'); -- 1
+insert into categoria(nome) values('Escritório'); -- 2
+insert into categoria(nome) values('Smartphones'); -- 3
+insert into categoria(nome) values('SmartTVs'); -- 4
+insert into categoria(nome) values('Eletrodomésticos'); -- 5
+insert into categoria(nome) values('Eletrônicos'); -- 6
+insert into categoria(nome) values('Móveis'); -- 7
+insert into categoria(nome) values('Cama, Mesa e Banho'); -- 8
 
-insert into produto(nome, preco) values('Computador', 4800.00);
-insert into produto(nome, preco) values('Impressora', 320.00);
-insert into produto(nome, preco) values('Mouse', 75.00);
+insert into produto(nome, preco) values('Computador', 4800.00); --1
+insert into produto(nome, preco) values('Impressora', 320.00); -- 2
+insert into produto(nome, preco) values('Mouse', 75.00); -- 3
+insert into produto(nome, preco) values('Mesa de escritório', 300.00); -- 4
+insert into produto(nome, preco) values('Toalha', 50.00); -- 5
+insert into produto(nome, preco) values('Colcha', 200.00); -- 6
+insert into produto(nome, preco) values('TV true color', 1200.00); -- 7
+insert into produto(nome, preco) values('Geladeira', 800.00); -- 8
+insert into produto(nome, preco) values('Abajour', 100.00); -- 9
+insert into produto(nome, preco) values('Pendente', 180.00); -- 10
+insert into produto(nome, preco) values('Shampoo', 90.00); -- 11
 
 insert into produto_categoria(produto_id, categoria_id) values(1, 1);
 insert into produto_categoria(produto_id, categoria_id) values(2, 1);
 insert into produto_categoria(produto_id, categoria_id) values(2, 2);
 insert into produto_categoria(produto_id, categoria_id) values(3, 1);
+insert into produto_categoria(produto_id, categoria_id) values(4, 7);
+insert into produto_categoria(produto_id, categoria_id) values(5, 8);
+insert into produto_categoria(produto_id, categoria_id) values(6, 8);
+insert into produto_categoria(produto_id, categoria_id) values(7, 6);
+insert into produto_categoria(produto_id, categoria_id) values(8, 5);
+insert into produto_categoria(produto_id, categoria_id) values(9, 2);
+insert into produto_categoria(produto_id, categoria_id) values(10, 2);
+insert into produto_categoria(produto_id, categoria_id) values(11, 8);
 
 insert into estado(nome) values('Minas Gerais');
 insert into estado(nome) values('São Paulo');

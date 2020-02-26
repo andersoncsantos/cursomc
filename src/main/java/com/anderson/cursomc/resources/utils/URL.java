@@ -32,6 +32,7 @@ public class URL {
         return list;*/
 
         //return Arrays.asList(string.split(",")).stream().map(x -> Integer.parseInt(x)).collect(Collectors.toList());
-        return Arrays.stream(string.split(",")).map(x -> Integer.parseInt(x)).collect(Collectors.toList());
+        //return Arrays.stream(string.split(",")).map(x -> Integer.parseInt(x)).collect(Collectors.toList());
+        return Arrays.stream(string.split(",")).map(Integer::parseInt).collect(Collectors.toList());
     }
 }

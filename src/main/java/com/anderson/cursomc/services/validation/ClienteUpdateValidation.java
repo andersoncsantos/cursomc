@@ -2,11 +2,8 @@ package com.anderson.cursomc.services.validation;
 
 import com.anderson.cursomc.domain.Cliente;
 import com.anderson.cursomc.domain.dto.ClienteDTO;
-import com.anderson.cursomc.domain.dto.NewClienteDTO;
-import com.anderson.cursomc.domain.enums.TipoCliente;
 import com.anderson.cursomc.repositories.ClienteRepository;
 import com.anderson.cursomc.resources.exception.FieldMessage;
-import com.anderson.cursomc.services.validation.utils.BR;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerMapping;
 
@@ -29,24 +26,24 @@ public class ClienteUpdateValidation implements ConstraintValidator<ClienteUpdat
     public boolean isValid(ClienteDTO clienteDTO, ConstraintValidatorContext context) {
 
         @SuppressWarnings("unchecked")
-        Map<String, String> map = (Map<String, String>) request.getAttribute ( HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE );
+        Map<String, String> map = (Map<String, String>) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
         Integer urlId = Integer.parseInt(map.get("id"));
 
-        List<FieldMessage> list = new ArrayList<> ();
+        List<FieldMessage> list = new ArrayList<>();
 
-        Cliente cliente = clienteRepository.findByEmail ( clienteDTO.getEmail () );
+        Cliente cliente = clienteRepository.findByEmail(clienteDTO.getEmail());
 
-        if (cliente != null && !cliente.getId ().equals ( urlId )) {
-            list.add ( new FieldMessage ( "email", "Email já existe" ) );
+        if (cliente != null && !cliente.getId().equals(urlId)) {
+            list.add(new FieldMessage("email", "Email já existe"));
         }
 
         for (FieldMessage fieldMessage : list) {
-            context.disableDefaultConstraintViolation ();
-            context.buildConstraintViolationWithTemplate ( fieldMessage.getMessage () )
-                    .addPropertyNode ( fieldMessage.getFieldName () ).addConstraintViolation ();
+            context.disableDefaultConstraintViolation();
+            context.buildConstraintViolationWithTemplate(fieldMessage.getMessage())
+                    .addPropertyNode(fieldMessage.getFieldName()).addConstraintViolation();
         }
 
-        return list.isEmpty ();
+        return list.isEmpty();
     }
 
 }

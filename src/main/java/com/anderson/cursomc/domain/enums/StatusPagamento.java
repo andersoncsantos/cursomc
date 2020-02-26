@@ -17,15 +17,15 @@ public enum StatusPagamento {
 		this.descricao = descricao;
 	}
 
-	public static StatusPagamento toEnum(Integer cod) {
+    public static StatusPagamento toEnum(Integer cod) {
 
 		if (cod == null) {
 			return null;
 		}
 
-		for (StatusPagamento tipoEstadoPagamento : StatusPagamento.values()) {
-			if (cod.equals(tipoEstadoPagamento.getCod())) {
-				return tipoEstadoPagamento;
+		for (StatusPagamento statusPagamento : StatusPagamento.values()) {
+			if (cod.equals(statusPagamento.getCod())) {
+				return statusPagamento;
 			}
 		}
 

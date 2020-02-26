@@ -1,10 +1,7 @@
 package com.anderson.cursomc.resources;
 
-import com.anderson.cursomc.domain.Categoria;
 import com.anderson.cursomc.domain.Produto;
-import com.anderson.cursomc.domain.dto.CategoriaDTO;
 import com.anderson.cursomc.domain.dto.ProdutoDTO;
-import com.anderson.cursomc.repositories.ProdutoRepository;
 import com.anderson.cursomc.resources.utils.URL;
 import com.anderson.cursomc.services.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,8 +35,8 @@ public class ProdutoResource {
 		String nomeDecoded = URL.decodeParam(nome);
 		List<Integer> ids = URL.decodeIntList(categorias);
 		Page<Produto> list = produtoService.search(nomeDecoded, ids, page, lines, orderby, direction);
-		Page<ProdutoDTO> listDTO = list.map(obj -> new ProdutoDTO(obj));
+		//Page<ProdutoDTO> listDTO = list.map(obj -> new ProdutoDTO(obj));
+		Page<ProdutoDTO> listDTO = list.map(ProdutoDTO::new);
 		return ResponseEntity.ok().body(listDTO);
 	}
-
 }
