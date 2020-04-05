@@ -23,7 +23,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
@@ -36,7 +35,9 @@ public class Produto implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
+
 	private String nome;
+
 	private Double preco;
 	
 	@JsonIgnore
@@ -48,7 +49,7 @@ public class Produto implements Serializable {
 	@JsonIgnore
 	@OneToMany(mappedBy = "id.produto")
 	private Set<ItemPedido> itens = new HashSet<>();
-	
+
 	@JsonIgnore
 	public List<Pedido> getPedidos(){
 		List<Pedido> lista = new ArrayList<>();
@@ -58,4 +59,9 @@ public class Produto implements Serializable {
 		return lista;
 	}
 
+	public Produto(Integer id, String nome, Double preco) {
+		this.id = id;
+		this.nome = nome;
+		this.preco = preco;
+	}
 }

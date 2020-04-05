@@ -35,7 +35,10 @@ public class ProdutoResource {
 		String nomeDecoded = URL.decodeParam(nome);
 		List<Integer> ids = URL.decodeIntList(categorias);
 		Page<Produto> list = produtoService.search(nomeDecoded, ids, page, lines, orderby, direction);
-		//Page<ProdutoDTO> listDTO = list.map(obj -> new ProdutoDTO(obj));
+		/*
+		Before Java 8
+		Page<ProdutoDTO> listDTO = list.map(obj -> new ProdutoDTO(obj));
+		*/
 		Page<ProdutoDTO> listDTO = list.map(ProdutoDTO::new);
 		return ResponseEntity.ok().body(listDTO);
 	}
