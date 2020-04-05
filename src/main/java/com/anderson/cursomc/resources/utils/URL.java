@@ -29,10 +29,12 @@ public class URL {
             list.add(Integer.parseInt(vetor[i]));
         }
 
-        return list;*/
+        return list;
 
-        //return Arrays.asList(string.split(",")).stream().map(x -> Integer.parseInt(x)).collect(Collectors.toList());
-        //return Arrays.stream(string.split(",")).map(x -> Integer.parseInt(x)).collect(Collectors.toList());
+        return Arrays.asList(string.split(",")).stream().map(x -> Integer.parseInt(x)).collect(Collectors.toList());
+        return Arrays.stream(string.split(",")).map(x -> Integer.parseInt(x)).collect(Collectors.toList());
+        */
+
         return Arrays.stream(string.split(",")).map(Integer::parseInt).collect(Collectors.toList());
     }
 }

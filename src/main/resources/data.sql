@@ -1,3 +1,4 @@
+/*
 insert into categoria(nome) values('Informática'); -- 1
 insert into categoria(nome) values('Escritório'); -- 2
 insert into categoria(nome) values('Smartphones'); -- 3
@@ -63,3 +64,4 @@ insert into item_pedido(desconto, preco, quantidade, pedido_id, produto_id) valu
 insert into item_pedido(desconto, preco, quantidade, pedido_id, produto_id) values(0.0, 75.00, 2, 1, 3);
 insert into item_pedido(desconto, preco, quantidade, pedido_id, produto_id) values(100.0, 320.00, 1, 2, 2);
 
+*/
