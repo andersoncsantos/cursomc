@@ -1,9 +1,9 @@
 package com.anderson.cursomc.domain;
 
-import java.io.Serializable;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -14,13 +14,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import java.io.Serializable;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Locale;
+import java.util.Set;
 
 @NoArgsConstructor
 @Getter
@@ -64,5 +64,27 @@ public class Pedido implements Serializable {
         this.instante = instante;
         this.cliente = cliente;
         this.enderecoDeEntrega = enderecoDeEntrega;
+    }
+
+    @Override
+    public String toString() {
+        NumberFormat numberFormat = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy kk:mm:ss");
+        final StringBuffer sb = new StringBuffer();
+        sb.append("Pedido Número: ");
+        sb.append(getId());
+        sb.append(" Data do Pedido: ");
+        sb.append(simpleDateFormat.format(getInstante()));
+        sb.append(", Cliente: ");
+        sb.append(getCliente().getNome());
+        sb.append(", Situação do Pagamento: ");
+        sb.append(getPagamento().getStatus().getDescricao());
+        sb.append("\nDetalhes:\n");
+        for (ItemPedido itemPedido : getItens()) {
+            sb.append(itemPedido.toString());
+        }
+        sb.append("Valor total: ");
+        sb.append(numberFormat.format(getValorTotal()));
+        return sb.toString();
     }
 }

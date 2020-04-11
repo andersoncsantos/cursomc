@@ -1,16 +1,16 @@
 package com.anderson.cursomc.domain;
 
-import java.io.Serializable;
-
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import java.io.Serializable;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 @NoArgsConstructor
 @Getter
@@ -58,4 +58,19 @@ public class ItemPedido implements Serializable {
 	public void setProduto(Produto produto) {
         id.setProduto(produto);
     }
+
+	@Override
+	public String toString() {
+		NumberFormat numberFormat = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+		final StringBuffer sb = new StringBuffer();
+		sb.append(getProduto().getNome());
+		sb.append(", Quantidade: ");
+		sb.append(getQuantidade());
+		sb.append(", Preço Unitário: ");
+		sb.append(numberFormat.format(getPreco()));
+		sb.append(", Subtotal: ");
+		sb.append(numberFormat.format(getSubTotal()));
+		sb.append("\n");
+		return sb.toString();
+	}
 }

@@ -3,6 +3,7 @@ package com.anderson.cursomc.services;
 import java.util.Date;
 import java.util.Optional;
 
+import com.anderson.cursomc.repositories.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,6 +35,9 @@ public class PedidoService {
 	@Autowired
     private ItemPedidoRepository itemPedidoRepository;
 
+    @Autowired
+    private ClienteService clienteService;
+
 	public Pedido find(Integer id) {
 		Optional<Pedido> pedido = pedidoRepository.findById(id);
 		return pedido.orElseThrow(() -> new ObjectNotFoundException(
@@ -44,6 +48,7 @@ public class PedidoService {
 	public Pedido insert(Pedido pedido) {
         pedido.setId(null);
         pedido.setInstante(new Date());
+        pedido.setCliente(clienteService.find(pedido.getCliente().getId()));
         pedido.getPagamento().setStatus(StatusPagamento.PENDENTE);
         pedido.getPagamento().setPedido(pedido);
         if (pedido.getPagamento() instanceof PagamentoComBoleto) {
@@ -52,13 +57,14 @@ public class PedidoService {
         }
         pedido = pedidoRepository.save(pedido);
         pagamentoRepository.save(pedido.getPagamento());
-        for (ItemPedido ip : pedido.getItens()) {
-            ip.setDesconto(0.0);
-            ip.setProduto(produtoService.find(ip.getProduto().getId()));
-            ip.setPreco(ip.getProduto().getPreco());
-            ip.setPedido(pedido);
+        for (ItemPedido itemPedido : pedido.getItens()) {
+            itemPedido.setDesconto(0.0);
+            itemPedido.setProduto(produtoService.find(itemPedido.getProduto().getId()));
+            itemPedido.setPreco(itemPedido.getProduto().getPreco());
+            itemPedido.setPedido(pedido);
         }
         itemPedidoRepository.saveAll(pedido.getItens());
+        System.out.println(pedido);
         return pedido;
     }
 
