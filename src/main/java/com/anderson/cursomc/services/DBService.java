@@ -11,6 +11,7 @@ import com.anderson.cursomc.domain.PagamentoComBoleto;
 import com.anderson.cursomc.domain.PagamentoComCartao;
 import com.anderson.cursomc.domain.Pedido;
 import com.anderson.cursomc.domain.Produto;
+import com.anderson.cursomc.domain.enums.Perfil;
 import com.anderson.cursomc.domain.enums.StatusPagamento;
 import com.anderson.cursomc.domain.enums.TipoCliente;
 import com.anderson.cursomc.repositories.CategoriaRepository;
@@ -135,8 +136,19 @@ public class DBService {
 
         cli1.getEnderecos().addAll(Arrays.asList(e1, e2));
 
-        clienteRepository.saveAll(Collections.singletonList(cli1));
-        enderecoRepository.saveAll(Arrays.asList(e1, e2));
+        Cliente cli2 = new Cliente(null, "Ana Costa", "andersonc1981_2@gmail.com", "10028994000",
+                TipoCliente.PESSOAFISICA, bCryptPasswordEncoder.encode("123456"));
+        cli2.addPerfil(Perfil.ADMIN);
+
+        cli2.getTelefones().addAll(Arrays.asList("27364323", "93838993"));
+
+        Endereco e3 = new Endereco(null, "Avenida Floriano", "2106", null, "Centro",
+                "28777012", cli2, c2);
+
+        cli1.getEnderecos().addAll(Arrays.asList(e3));
+
+        clienteRepository.saveAll(Arrays.asList(cli1, cli2));
+        enderecoRepository.saveAll(Arrays.asList(e1, e2, e3));
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
