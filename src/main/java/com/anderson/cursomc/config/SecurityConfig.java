@@ -1,7 +1,7 @@
 package com.anderson.cursomc.config;
 
-import com.anderson.cursomc.security.JWTAuthenticationFilter;
-import com.anderson.cursomc.security.JWTUtil;
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,7 +9,6 @@ import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -19,7 +18,9 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.Arrays;
+import com.anderson.cursomc.security.JWTAuthenticationFilter;
+import com.anderson.cursomc.security.JWTUtil;
+import com.anderson.cursomc.security.JwtAuthorizationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -57,6 +58,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(PUBLIC_MATCHERS).permitAll()
                 .anyRequest().authenticated();
         httpSecurity.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
+        httpSecurity.addFilter(new JwtAuthorizationFilter(authenticationManager(), jwtUtil, userDetailsService));
         httpSecurity.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 
@@ -66,7 +68,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    CorsConfigurationSource corsConfigurationSource() {
+    CorsConfigurationSource corsConfigurationSource() {	
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
         return source;
