@@ -35,29 +35,29 @@ public class ClienteService {
 	@Autowired
 	private EnderecoRepository enderecoRepository;
 
-	public Cliente find(Integer id) {
+	public Cliente findCliente(Integer id) {
 		Optional<Cliente> cliente = clienteRepository.findById(id);
 		return cliente.orElseThrow(() -> new ObjectNotFoundException(
 				"Objeto não encontrado! Id: " + id + ", Tipo: " + Cliente.class.getName()));
 	}
 
 	@Transactional
-	public Cliente insert(Cliente cliente) {
+	public Cliente insertCliente(Cliente cliente) {
 		cliente.setId(null);
 		cliente = clienteRepository.save(cliente);
 		enderecoRepository.saveAll(cliente.getEnderecos());
 		return cliente;
 	}
 
-	public Cliente update(Cliente cliente) {
-		Cliente newCliente = find(cliente.getId());
+	public void updateCliente(Cliente cliente) {
+		Cliente newCliente = findCliente(cliente.getId());
 		updateData(newCliente, cliente);
-		return clienteRepository.save(newCliente);
+		clienteRepository.save(newCliente);
 	}
 
 
-	public void delete(Integer id) {
-		find(id);
+	public void deleteCliente(Integer id) {
+		findCliente(id);
 		try {
 			clienteRepository.deleteById(id);
 		} catch (DataIntegrityViolationException e) {
@@ -66,11 +66,11 @@ public class ClienteService {
 
 	}
 
-	public List<Cliente> findAll() {
+	public List<Cliente> findAllCliente() {
 		return clienteRepository.findAll();
 	}
 
-	public Page<Cliente> findPage(Integer page, Integer lines, String orderBy, String direction) {
+	public Page<Cliente> findPageCliente(Integer page, Integer lines, String orderBy, String direction) {
 		PageRequest pageRequest = PageRequest.of(page, lines, Direction.valueOf(direction), orderBy );
 		return clienteRepository.findAll(pageRequest);
 	}

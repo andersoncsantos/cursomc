@@ -22,25 +22,25 @@ public class CategoriaService {
 	@Autowired
 	private CategoriaRepository categoriaRepository;
 
-	public Categoria find(Integer id) {
+	public Categoria findCategoria(Integer id) {
 		Optional<Categoria> categoria = categoriaRepository.findById(id);
 		return categoria.orElseThrow(() -> new ObjectNotFoundException(
 				"Objeto não encontrado! Id: " + id + ", Tipo: " + Categoria.class.getName()));
 	}
 	
-	public Categoria insert(Categoria categoria) {
+	public Categoria insertCategoria(Categoria categoria) {
 		categoria.setId(null);
 		return categoriaRepository.save(categoria);
 	}
 	
-	public Categoria update(Categoria categoria) {
-		Categoria newCategoria = find(categoria.getId());
+	public void updateCategoria(Categoria categoria) {
+		Categoria newCategoria = findCategoria(categoria.getId());
 		updateData(newCategoria, categoria);
-		return categoriaRepository.save(newCategoria);
+		categoriaRepository.save(newCategoria);
 	}
 
-	public void delete(Integer id) {
-		find(id);
+	public void deleteCategoria(Integer id) {
+		findCategoria(id);
 		try {
 			categoriaRepository.deleteById(id);			
 		} catch (DataIntegrityViolationException e) {
@@ -49,11 +49,11 @@ public class CategoriaService {
 		
 	}
 
-	public List<Categoria> findAll() {
+	public List<Categoria> findAllCategoria() {
 		return categoriaRepository.findAll();
 	}
 	
-	public Page<Categoria> findPage(Integer page, Integer lines, String orderby, String direction) {
+	public Page<Categoria> findPageCategoria(Integer page, Integer lines, String orderby, String direction) {
 		PageRequest pageRequest = PageRequest.of(page, lines, Direction.valueOf(direction), orderby );
 		return categoriaRepository.findAll(pageRequest);
 	}

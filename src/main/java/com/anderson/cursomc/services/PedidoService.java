@@ -3,7 +3,6 @@ package com.anderson.cursomc.services;
 import java.util.Date;
 import java.util.Optional;
 
-import com.anderson.cursomc.repositories.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,17 +40,17 @@ public class PedidoService {
     @Autowired
     private EmailService emailService;
 
-	public Pedido find(Integer id) {
+	public Pedido findPedido(Integer id) {
 		Optional<Pedido> pedido = pedidoRepository.findById(id);
 		return pedido.orElseThrow(() -> new ObjectNotFoundException(
 				"Objeto não encontrado! Id: " + id + ", Tipo: " + Pedido.class.getName()));
 	}
 
 	@Transactional
-	public Pedido insert(Pedido pedido) {
+	public Pedido insertPedido(Pedido pedido) {
         pedido.setId(null);
         pedido.setInstante(new Date());
-        pedido.setCliente(clienteService.find(pedido.getCliente().getId()));
+        pedido.setCliente(clienteService.findCliente(pedido.getCliente().getId()));
         pedido.getPagamento().setStatus(StatusPagamento.PENDENTE);
         pedido.getPagamento().setPedido(pedido);
         if (pedido.getPagamento() instanceof PagamentoComBoleto) {
@@ -62,7 +61,7 @@ public class PedidoService {
         pagamentoRepository.save(pedido.getPagamento());
         for (ItemPedido itemPedido : pedido.getItens()) {
             itemPedido.setDesconto(0.0);
-            itemPedido.setProduto(produtoService.find(itemPedido.getProduto().getId()));
+            itemPedido.setProduto(produtoService.findProduto(itemPedido.getProduto().getId()));
             itemPedido.setPreco(itemPedido.getProduto().getPreco());
             itemPedido.setPedido(pedido);
         }

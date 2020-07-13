@@ -30,16 +30,16 @@ public class CategoriaResource {
 	private CategoriaService categoriaService;
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	private ResponseEntity<Categoria> find(@PathVariable Integer id) {
-		Categoria categoria = categoriaService.find(id);
+	private ResponseEntity<Categoria> findResource(@PathVariable Integer id) {
+		Categoria categoria = categoriaService.findCategoria(id);
 		return ResponseEntity.ok().body(categoria);
 	}
 
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Void> insert(@Valid @RequestBody CategoriaDTO categoriaDTO) {
+	public ResponseEntity<Void> insertResource(@Valid @RequestBody CategoriaDTO categoriaDTO) {
 		Categoria categoria = categoriaService.fromDTO(categoriaDTO);
-		categoria = categoriaService.insert(categoria);
+		categoria = categoriaService.insertCategoria(categoria);
 		URI uri = ServletUriComponentsBuilder
 				.fromCurrentRequest()
 				.path("/{id}")
@@ -50,35 +50,35 @@ public class CategoriaResource {
 
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> update(@Valid @RequestBody CategoriaDTO categoriaDTO, @PathVariable Integer id) {
+	public ResponseEntity<Void> updateResource(@Valid @RequestBody CategoriaDTO categoriaDTO, @PathVariable Integer id) {
 		Categoria categoria = categoriaService.fromDTO(categoriaDTO);
 		categoria.setId(id);
-		categoriaService.update(categoria);
+		categoriaService.updateCategoria(categoria);
 		return ResponseEntity.noContent().build();
 	}
 
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<Void> delete(@PathVariable Integer id) {
-		categoriaService.delete(id);
+	public ResponseEntity<Void> deleteResource(@PathVariable Integer id) {
+		categoriaService.deleteCategoria(id);
 		return ResponseEntity.noContent().build();
 	}
 	
 	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<List<CategoriaDTO>> findAll() {
-		List<Categoria> categoria = categoriaService.findAll();
+	public ResponseEntity<List<CategoriaDTO>> findAllResource() {
+		List<Categoria> categoria = categoriaService.findAllCategoria();
 		/*List<CategoriaDTO> categoriaDTO = categoria.stream().map(obj -> new CategoriaDTO(obj)).collect(Collectors.toList()); with lambda*/
 		List<CategoriaDTO> categoriaDTO = categoria.stream().map(CategoriaDTO::new).collect(Collectors.toList()); // with method reference
 		return ResponseEntity.ok().body(categoriaDTO);
 	}
 	
 	@RequestMapping(value = "/page", method = RequestMethod.GET)
-	public ResponseEntity<Page<CategoriaDTO>> findPage(
+	public ResponseEntity<Page<CategoriaDTO>> findPageResource(
 			@RequestParam(value = "page", defaultValue = "0") Integer page, 
 			@RequestParam(value = "lines", defaultValue = "24") Integer lines, 
 			@RequestParam(value = "orderby", defaultValue = "nome") String orderby, 
 			@RequestParam(value = "direction", defaultValue = "ASC") String direction) {
-		Page<Categoria> categoria = categoriaService.findPage(page, lines, orderby, direction);
+		Page<Categoria> categoria = categoriaService.findPageCategoria(page, lines, orderby, direction);
 		Page<CategoriaDTO> categoriaDTO = categoria.map(CategoriaDTO::new); // with method reference
 		return ResponseEntity.ok().body(categoriaDTO);
 	}

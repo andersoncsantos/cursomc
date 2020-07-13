@@ -19,13 +19,13 @@ public class ProdutoResource {
 	private ProdutoService produtoService;
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	private ResponseEntity<Produto> find(@PathVariable Integer id) {
-		Produto produto = produtoService.find(id);
+	private ResponseEntity<Produto> findResource(@PathVariable Integer id) {
+		Produto produto = produtoService.findProduto(id);
 		return ResponseEntity.ok().body(produto);
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<Page<ProdutoDTO>> findPage(
+	public ResponseEntity<Page<ProdutoDTO>> findPageResource(
 			@RequestParam(value = "nome", defaultValue = "") String nome,
 			@RequestParam(value = "categorias", defaultValue = "") String categorias,
 			@RequestParam(value = "page", defaultValue = "0") Integer page,
@@ -34,11 +34,8 @@ public class ProdutoResource {
 			@RequestParam(value = "direction", defaultValue = "ASC") String direction) {
 		String nomeDecoded = URL.decodeParam(nome);
 		List<Integer> ids = URL.decodeIntList(categorias);
-		Page<Produto> list = produtoService.search(nomeDecoded, ids, page, lines, orderby, direction);
-		/*
-		Before Java 8
-		Page<ProdutoDTO> listDTO = list.map(obj -> new ProdutoDTO(obj));
-		*/
+		Page<Produto> list = produtoService.searchProduto(nomeDecoded, ids, page, lines, orderby, direction);
+		/* Page<ProdutoDTO> listDTO = list.map(obj -> new ProdutoDTO(obj)); with lambda*/
 		Page<ProdutoDTO> listDTO = list.map(ProdutoDTO::new);
 		return ResponseEntity.ok().body(listDTO);
 	}

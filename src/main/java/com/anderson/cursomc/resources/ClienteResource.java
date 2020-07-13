@@ -31,15 +31,15 @@ public class ClienteResource {
 	private ClienteService clienteService;
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	private ResponseEntity<Cliente> find(@PathVariable Integer id) {
-		Cliente cliente = clienteService.find(id);
+	private ResponseEntity<Cliente> findResource(@PathVariable Integer id) {
+		Cliente cliente = clienteService.findCliente(id);
 		return ResponseEntity.ok().body(cliente);
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Void> insert(@Valid @RequestBody NewClienteDTO newClienteDTO) {
+	public ResponseEntity<Void> insertResource(@Valid @RequestBody NewClienteDTO newClienteDTO) {
 		Cliente cliente = clienteService.fromDTO(newClienteDTO);
-		cliente = clienteService.insert(cliente);
+		cliente = clienteService.insertCliente(cliente);
 		URI uri = ServletUriComponentsBuilder
 				.fromCurrentRequest()
 				.path("/{id}")
@@ -49,35 +49,35 @@ public class ClienteResource {
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> update(@Valid @RequestBody ClienteDTO clienteDTO, @PathVariable Integer id) {
+	public ResponseEntity<Void> updateResource(@Valid @RequestBody ClienteDTO clienteDTO, @PathVariable Integer id) {
 		Cliente cliente = clienteService.fromDTO(clienteDTO);
 		cliente.setId(id);
-		clienteService.update(cliente);
+		clienteService.updateCliente(cliente);
 		return ResponseEntity.noContent().build();
 	}
 
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<Void> delete(@PathVariable Integer id) {
-		clienteService.delete(id);
+	public ResponseEntity<Void> deleteResource(@PathVariable Integer id) {
+		clienteService.deleteCliente(id);
 		return ResponseEntity.noContent().build();
 	}
 	
 	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<List<ClienteDTO>> findAll() {
-		List<Cliente> cliente = clienteService.findAll();
+	public ResponseEntity<List<ClienteDTO>> findAllResource() {
+		List<Cliente> cliente = clienteService.findAllCliente();
 		List<ClienteDTO> clienteDTO = cliente.stream().map(ClienteDTO::new).collect(Collectors.toList());
 		return ResponseEntity.ok().body(clienteDTO);
 	}
 
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(value = "/page", method = RequestMethod.GET)
-	public ResponseEntity<Page<ClienteDTO>> findPage(
+	public ResponseEntity<Page<ClienteDTO>> findPageResource(
 			@RequestParam(value = "page", defaultValue = "0") Integer page, 
 			@RequestParam(value = "lines", defaultValue = "24") Integer lines, 
 			@RequestParam(value = "orderby", defaultValue = "nome") String orderby, 
 			@RequestParam(value = "direction", defaultValue = "ASC") String direction) {
-		Page<Cliente> cliente = clienteService.findPage(page, lines, orderby, direction);
+		Page<Cliente> cliente = clienteService.findPageCliente(page, lines, orderby, direction);
 		Page<ClienteDTO> clienteDTO = cliente.map(ClienteDTO::new);
 		return ResponseEntity.ok().body(clienteDTO);
 	}

@@ -24,14 +24,14 @@ public class PedidoResource {
 	private PedidoService pedidoService;
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	private ResponseEntity<Pedido> find(@PathVariable Integer id) {
-		Pedido pedido = pedidoService.find(id);
+	private ResponseEntity<Pedido> findResource(@PathVariable Integer id) {
+		Pedido pedido = pedidoService.findPedido(id);
 		return ResponseEntity.ok().body(pedido);
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Void> insert(@Valid @RequestBody Pedido pedido) {
-	    pedido = pedidoService.insert(pedido);
+    public ResponseEntity<Void> insertResource(@Valid @RequestBody Pedido pedido) {
+	    pedido = pedidoService.insertPedido(pedido);
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
