@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 public class SystemUser implements UserDetails {
 
-    private static final long serialVersionUID = 1083701451993439566L;
+    private static final long serialVersionUID = 1L;
 
     private Integer id;
     private String email;
