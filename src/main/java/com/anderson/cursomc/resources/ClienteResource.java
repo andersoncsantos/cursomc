@@ -62,7 +62,8 @@ public class ClienteResource {
 		clienteService.deleteCliente(id);
 		return ResponseEntity.noContent().build();
 	}
-	
+
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<List<ClienteDTO>> findAllResource() {
 		List<Cliente> cliente = clienteService.findAllCliente();
