@@ -1,5 +1,6 @@
 package com.anderson.cursomc.services;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -26,6 +27,7 @@ import com.anderson.cursomc.repositories.ClienteRepository;
 import com.anderson.cursomc.repositories.EnderecoRepository;
 import com.anderson.cursomc.services.exceptions.DataIntegrityException;
 import com.anderson.cursomc.services.exceptions.ObjectNotFoundException;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class ClienteService {
@@ -38,6 +40,9 @@ public class ClienteService {
 
 	@Autowired
 	private EnderecoRepository enderecoRepository;
+
+	@Autowired
+	private S3Service s3Service;
 
 	public Cliente findCliente(Integer id) {
 		SystemUser user = UserService.authenticated();
@@ -116,5 +121,9 @@ public class ClienteService {
 	private void updateData(Cliente newCliente, Cliente cliente) {
 		newCliente.setNome(cliente.getNome());
 		newCliente.setEmail(cliente.getEmail());
+	}
+
+	public URI updateProfilePicture(MultipartFile multipartFile){
+		return s3Service.uploadFile(multipartFile);
 	}
 }
