@@ -1,5 +1,6 @@
 package com.anderson.cursomc.services;
 
+import java.awt.image.BufferedImage;
 import java.net.URI;
 import java.util.List;
 import java.util.Objects;
@@ -9,6 +10,7 @@ import com.anderson.cursomc.domain.enums.Perfil;
 import com.anderson.cursomc.security.SystemUser;
 import com.anderson.cursomc.services.exceptions.AuthorizationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -43,6 +45,12 @@ public class ClienteService {
 
 	@Autowired
 	private S3Service s3Service;
+
+	@Autowired
+	private ImageService imageService;
+
+	@Value("${img.prefix.client.profile}")
+	private String prefix;
 
 	public Cliente findCliente(Integer id) {
 		SystemUser user = UserService.authenticated();
@@ -123,17 +131,15 @@ public class ClienteService {
 		newCliente.setEmail(cliente.getEmail());
 	}
 
-	public URI updateProfilePicture(MultipartFile multipartFile) {
-		SystemUser user = UserService.authenticated();
-		if (Objects.isNull(user)) {
-			throw new AuthorizationException("Acesso negado");
-		}
+    public URI updateProfilePicture(MultipartFile multipartFile) {
+        SystemUser user = UserService.authenticated();
+        if (Objects.isNull(user)) {
+            throw new AuthorizationException("Acesso negado");
+        }
 
-		URI uri = s3Service.uploadFile(multipartFile);
+        BufferedImage jpgImage = imageService.getJpgImageFromFile(multipartFile);
+        String fileName = prefix + user.getId() + ".jpg";
 
-		Cliente cliente = clienteRepository.findById(user.getId()).get();
-		cliente.setImageUrl(uri.toString());
-		clienteRepository.save(cliente);
-		return uri;
-	}
+        return s3Service.uploadFile(imageService.getInputStream(jpgImage, "jpg"), fileName, "image");
+    }
 }
