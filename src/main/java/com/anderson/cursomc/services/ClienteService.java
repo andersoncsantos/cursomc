@@ -1,14 +1,18 @@
 package com.anderson.cursomc.services;
 
-import java.awt.image.BufferedImage;
-import java.net.URI;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-
+import com.anderson.cursomc.domain.Cidade;
+import com.anderson.cursomc.domain.Cliente;
+import com.anderson.cursomc.domain.Endereco;
+import com.anderson.cursomc.domain.dto.ClienteDTO;
+import com.anderson.cursomc.domain.dto.NewClienteDTO;
 import com.anderson.cursomc.domain.enums.Perfil;
+import com.anderson.cursomc.domain.enums.TipoCliente;
+import com.anderson.cursomc.repositories.ClienteRepository;
+import com.anderson.cursomc.repositories.EnderecoRepository;
 import com.anderson.cursomc.security.SystemUser;
 import com.anderson.cursomc.services.exceptions.AuthorizationException;
+import com.anderson.cursomc.services.exceptions.DataIntegrityException;
+import com.anderson.cursomc.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -18,18 +22,13 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.anderson.cursomc.domain.Cidade;
-import com.anderson.cursomc.domain.Cliente;
-import com.anderson.cursomc.domain.Endereco;
-import com.anderson.cursomc.domain.dto.ClienteDTO;
-import com.anderson.cursomc.domain.dto.NewClienteDTO;
-import com.anderson.cursomc.domain.enums.TipoCliente;
-import com.anderson.cursomc.repositories.ClienteRepository;
-import com.anderson.cursomc.repositories.EnderecoRepository;
-import com.anderson.cursomc.services.exceptions.DataIntegrityException;
-import com.anderson.cursomc.services.exceptions.ObjectNotFoundException;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.awt.image.BufferedImage;
+import java.net.URI;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class ClienteService {
@@ -51,6 +50,9 @@ public class ClienteService {
 
 	@Value("${img.prefix.client.profile}")
 	private String prefix;
+
+	@Value("${img.profile.size}")
+	private Integer size;
 
 	public Cliente findCliente(Integer id) {
 		SystemUser user = UserService.authenticated();
@@ -138,6 +140,8 @@ public class ClienteService {
         }
 
         BufferedImage jpgImage = imageService.getJpgImageFromFile(multipartFile);
+        jpgImage = imageService.cropSquare(jpgImage);
+        jpgImage = imageService.resize(jpgImage, size);
         String fileName = prefix + user.getId() + ".jpg";
 
         return s3Service.uploadFile(imageService.getInputStream(jpgImage, "jpg"), fileName, "image");
