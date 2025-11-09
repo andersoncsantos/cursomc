@@ -46,17 +46,17 @@ public class PedidoService {
     @Autowired
     private EmailService emailService;
 
-	public Pedido findPedido(Integer id) {
+	public Pedido find(Integer id) {
 		Optional<Pedido> pedido = pedidoRepository.findById(id);
 		return pedido.orElseThrow(() -> new ObjectNotFoundException(
 				"Objeto não encontrado! Id: " + id + ", Tipo: " + Pedido.class.getName()));
 	}
 
 	@Transactional
-	public Pedido insertPedido(Pedido pedido) {
+	public Pedido create(Pedido pedido) {
         pedido.setId(null);
         pedido.setInstante(new Date());
-        pedido.setCliente(clienteService.findCliente(pedido.getCliente().getId()));
+        pedido.setCliente(clienteService.find(pedido.getCliente().getId()));
         pedido.getPagamento().setStatus(StatusPagamento.PENDENTE);
         pedido.getPagamento().setPedido(pedido);
         if (pedido.getPagamento() instanceof PagamentoComBoleto) {
@@ -67,7 +67,7 @@ public class PedidoService {
         pagamentoRepository.save(pedido.getPagamento());
         for (ItemPedido itemPedido : pedido.getItens()) {
             itemPedido.setDesconto(0.0);
-            itemPedido.setProduto(produtoService.findProduto(itemPedido.getProduto().getId()));
+            itemPedido.setProduto(produtoService.find(itemPedido.getProduto().getId()));
             itemPedido.setPreco(itemPedido.getProduto().getPreco());
             itemPedido.setPedido(pedido);
         }
@@ -77,13 +77,13 @@ public class PedidoService {
         return pedido;
     }
 
-    public Page<Pedido> findPagePedido(Integer page, Integer lines, String orderby, String direction) {
+    public Page<Pedido> findPage(Integer page, Integer lines, String orderBy, String direction) {
         SystemUser user = UserService.authenticated();
         if (Objects.isNull(user)) {
             throw new AuthorizationException("Acesso negado");
         }
-        PageRequest pageRequest = PageRequest.of(page, lines, Sort.Direction.valueOf(direction), orderby);
-        Cliente cliente = clienteService.findCliente(user.getId());
+        PageRequest pageRequest = PageRequest.of(page, lines, Sort.Direction.valueOf(direction), orderBy);
+        Cliente cliente = clienteService.find(user.getId());
         return pedidoRepository.findByCliente(cliente, pageRequest);
     }
 

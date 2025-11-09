@@ -54,7 +54,7 @@ public class ClienteService {
 	@Value("${img.profile.size}")
 	private Integer size;
 
-	public Cliente findCliente(Integer id) {
+	public Cliente find(Integer id) {
 		SystemUser user = UserService.authenticated();
 		if (Objects.isNull(user) || !user.hasHole(Perfil.ADMIN) && !id.equals(user.getId())) {
 			throw new AuthorizationException("Acesso negado");
@@ -66,22 +66,23 @@ public class ClienteService {
 	}
 
 	@Transactional
-	public Cliente insertCliente(Cliente cliente) {
+	public Cliente create(Cliente cliente) {
 		cliente.setId(null);
 		cliente = clienteRepository.save(cliente);
 		enderecoRepository.saveAll(cliente.getEnderecos());
 		return cliente;
 	}
 
-	public void updateCliente(Cliente cliente) {
-		Cliente newCliente = findCliente(cliente.getId());
+	@Transactional
+	public Cliente update(Cliente cliente) {
+		Cliente newCliente = find(cliente.getId());
 		updateData(newCliente, cliente);
-		clienteRepository.save(newCliente);
+		return clienteRepository.save(newCliente);
 	}
 
 
-	public void deleteCliente(Integer id) {
-		findCliente(id);
+	public void delete(Integer id) {
+		find(id);
 		try {
 			clienteRepository.deleteById(id);
 		} catch (DataIntegrityViolationException e) {
@@ -90,11 +91,11 @@ public class ClienteService {
 
 	}
 
-	public List<Cliente> findAllCliente() {
+	public List<Cliente> findAll() {
 		return clienteRepository.findAll();
 	}
 
-	public Cliente findByEmailCliente(String email) {
+	public Cliente findByEmail(String email) {
 		SystemUser user = UserService.authenticated();
 		if (Objects.isNull(user) || !user.hasHole(Perfil.ADMIN) && !email.equals(user.getUsername())) {
 			throw new AuthorizationException("Acesso negado");
@@ -107,7 +108,7 @@ public class ClienteService {
 		return cliente;
 	}
 
-	public Page<Cliente> findPageCliente(Integer page, Integer lines, String orderBy, String direction) {
+	public Page<Cliente> findPage(Integer page, Integer lines, String orderBy, String direction) {
 		PageRequest pageRequest = PageRequest.of(page, lines, Direction.valueOf(direction), orderBy );
 		return clienteRepository.findAll(pageRequest);
 	}

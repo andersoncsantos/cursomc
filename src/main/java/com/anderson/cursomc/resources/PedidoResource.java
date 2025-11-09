@@ -24,29 +24,29 @@ public class PedidoResource {
 	private PedidoService pedidoService;
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public ResponseEntity<Pedido> findResource(@PathVariable Integer id) {
-		Pedido pedido = pedidoService.findPedido(id);
+	public ResponseEntity<Pedido> find(@PathVariable Integer id) {
+		Pedido pedido = pedidoService.find(id);
 		return ResponseEntity.ok().body(pedido);
 	}
-	
+
 	@RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Void> insertResource(@Valid @RequestBody Pedido pedido) {
-	    pedido = pedidoService.insertPedido(pedido);
-        URI uri = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(pedido.getId())
-                .toUri();
-        return ResponseEntity.created(uri).build();
-    }
+	public ResponseEntity<Void> create(@Valid @RequestBody Pedido pedido) {
+		pedido = pedidoService.create(pedido);
+		URI uri = ServletUriComponentsBuilder
+				.fromCurrentRequest()
+				.path("/{id}")
+				.buildAndExpand(pedido.getId())
+				.toUri();
+		return ResponseEntity.created(uri).build();
+	}
 
 	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<Page<Pedido>> findPageResource(
+	public ResponseEntity<Page<Pedido>> findPage(
 			@RequestParam(value = "page", defaultValue = "0") Integer page,
 			@RequestParam(value = "lines", defaultValue = "24") Integer lines,
-			@RequestParam(value = "orderby", defaultValue = "instante") String orderby,
+			@RequestParam(value = "orderBy", defaultValue = "instante") String orderBy,
 			@RequestParam(value = "direction", defaultValue = "DESC") String direction) {
-		Page<Pedido> pedido = pedidoService.findPagePedido(page, lines, orderby, direction);
+		Page<Pedido> pedido = pedidoService.findPage(page, lines, orderBy, direction);
 		return ResponseEntity.ok().body(pedido);
 	}
 
